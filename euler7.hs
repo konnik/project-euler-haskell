@@ -5,14 +5,17 @@
 import Data.List (unfoldr)
 import Data.Maybe (listToMaybe)
 
+sqrtInt :: Int -> Int
+sqrtInt = floor . sqrt . fromIntegral
+
 factors :: Int -> [Int]
-factors n = unfoldr (\n -> listToMaybe [(x, div n x) | x <- [2..n], mod n x==0]) n
+factors n = unfoldr (\n -> listToMaybe [(x, div n x) | x <- 2:[3,5..sqrtInt n], mod n x==0]) n
 
 isPrime :: Int -> Bool
-isPrime n = n>1 && head (factors n) == n
+isPrime n = n>1 && null (factors n)
 
 nthPrime :: Int -> Int
-nthPrime n = last . (take n) . (filter isPrime) $ [2..]
+nthPrime n = last . (take n) . (filter isPrime) $ 2:[3,5..]
 
 main = do
     let answer = nthPrime 10001
